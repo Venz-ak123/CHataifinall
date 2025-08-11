@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VenzAiGen - AI Power Tools</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            min-height: 100vh;
+            color: #e2e8f0;
+        }
+        .card-glass {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+        }
+        .btn-glow {
+            background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+            box-shadow: 0 0 15px rgba(99, 102, 241, 0.7);
+            transition: all 0.3s ease;
+        }
+        .btn-glow:hover {
+            box-shadow: 0 0 25px rgba(99, 102, 241, 0.9);
+            transform: translateY(-2px);
+        }
+        .tilt-card {
+            transform-style: preserve-3d;
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+        }
+        .loader {
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .wave {
+            animation: wave 1.5s ease-in-out infinite;
+        }
+        @keyframes wave {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        .pulse {
+            animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+    <!-- Navigation -->
+    <nav class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm border-b border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <h1 class="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-indigo-400 to-purple-500">VenzAiGen</h1>
+                    </div>
+                    <div class="hidden md:block">
+                        <div class="ml-10 flex items-baseline space-x-4">
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-white hover:text-indigo-300 transition-all">Dashboard</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-indigo-300 transition-all">Features</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-indigo-300 transition-all">Pricing</a>
+                            <a href="#" class="px-3 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-indigo-300 transition-all">About</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-4 flex items-center md:ml-6">
+                        <button class="bg-indigo-600 px-4 py-2 rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all mr-3">Sign In</button>
+                        <button class="bg-indigo-600 px-4 py-2 rounded-md text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transition-all">Sign Up</button>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button class="bg-gray-800 inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow container mx-auto px-4 py-10 flex flex-col items-center justify-center">
+        <!-- API Key Input Section -->
+        <section id="api-section" class="w-full max-w-2xl card-glass p-8 tilt-card">
+            <div class="text-center mb-6">
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/4a136331-8d24-4db8-9643-6ac303cef4ac.png" alt="VenzAiGen logo with futuristic tech gradient and abstract AI symbols" class="mx-auto mb-4"/>
+                <h2 class="text-3xl font-bold text-white mb-2">Connect to GroqCloud API</h2>
+                <p class="text-gray-300">Enter your API key to unlock the full power of VenzAiGen</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="api-key" class="block text-sm font-medium text-gray-300 mb-2">GroqCloud API Key</label>
+                <div class="relative rounded-md shadow-sm">
+                    <input type="password" id="api-key" name="api-key" class="w-full bg-gray-800 border border-gray-700 rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="sk-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx">
+                    <div id="api-status" class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                    </div>
+                </div>
+                <p class="mt-2 text-xs text-gray-500">Your API key is securely stored locally in your browser</p>
+            </div>
+            
+            <button id="connect-btn" class="w-full btn-glow text-white font-bold py-3 px-4 rounded-md transition-all duration-300 transform hover:-translate-y-1">
+                <span id="connect-text">Connect to API</span>
+                <span id="connect-loading" class="hidden">
+                    <i class="fas fa-circle-notch loader mr-2"></i> Connecting...
+                </span>
+            </button>
+            
+            <div id="success-message" class="hidden mt-4 p-3 bg-green-900 bg-opacity-40 rounded-md border border-green-500">
+                <div class="flex items-center text-green-400">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+                    </svg>
+                    <span>Successfully connected to GroqCloud API!</span>
+                </div>
+                <div class="mt-2 text-sm text-green-300">
+                    You can now access all VenzAiGen features.
+                </div>
+            </div>
+            
+            <div id="error-message" class="hidden mt-4 p-3 bg-red-900 bg-opacity-40 rounded-md border border-red-500">
+                <div class="flex items-center text-red-400">
+                    <svg class="h-5 w-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                    <span id="error-text">Failed to connect to API</span>
+                </div>
+                <div class="mt-2 text-sm text-red-300">
+                    Please check your API key and try again.
+                </div>
+            </div>
+        </section>
+
+        <!-- Dashboard Section (Hidden by default) -->
+        <section id="dashboard-section" class="hidden w-full max-w-5xl mt-10">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold text-white">AI Generation Dashboard</h2>
+                <div class="flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <div class="h-3 w-3 rounded-full bg-green-500 mr-2"></div>
+                        <span class="text-sm text-gray-400">API Connected</span>
+                    </div>
+                    <button id="change-api-btn" class="text-xs text-indigo-400 hover:text-indigo-300">Change API Key</button>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Image Input Card -->
+                <div class="card-glass p-6 tilt-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-600 bg-opacity-20 p-2 rounded-full mr-3">
+                            <i class="fas fa-file-upload text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-white">Upload Image</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Select an image file from your device for AI processing</p>
+                    
+                    <div class="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center cursor-pointer hover:border-indigo-500 transition-all duration-300" id="drop-zone">
+                        <div class="flex flex-col items-center justify-center">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/33758722-69b1-4646-bcb1-0c69cd19b1f1.png" alt="Abstract illustration of document upload with arrows pointing to cloud" class="w-32 h-32 object-contain mb-3 opacity-60"/>
+                            <p class="text-sm text-gray-400 mb-2">Drag & drop your image here</p>
+                            <p class="text-xs text-gray-500 mb-4">or</p>
+                            <button id="select-file-btn" class="btn-glow text-white font-medium py-2 px-6 rounded-md text-sm transition-all">
+                                Select File
+                            </button>
+                        </div>
+                        <input type="file" id="file-input" class="hidden" accept="image/*">
+                    </div>
+                    
+                    <div id="upload-progress" class="hidden mt-4">
+                        <div class="flex justify-between text-xs text-gray-400 mb-1">
+                            <span>Uploading...</span>
+                            <span id="upload-percent">0%</span>
+                        </div>
+                        <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div id="upload-bar" class="bg-indigo-500 h-2 rounded-full" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    
+                    <textarea id="image-description" class="w-full mt-6 bg-gray-800 border border-gray-700 rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent hidden" placeholder="Describe what AI should do with this image..." rows="3"></textarea>
+                    
+                    <button id="process-image-btn" class="hidden w-full mt-4 btn-glow text-white font-bold py-3 px-4 rounded-md">
+                        <span id="process-text">Process Image</span>
+                        <span id="process-loading" class="hidden">
+                            <i class="fas fa-circle-notch loader mr-2"></i> Analyzing...
+                        </span>
+                    </button>
+                </div>
+                
+                <!-- Camera Capture Card -->
+                <div class="card-glass p-6 tilt-card">
+                    <div class="flex items-center mb-4">
+                        <div class="bg-indigo-600 bg-opacity-20 p-2 rounded-full mr-3">
+                            <i class="fas fa-camera text-indigo-400"></i>
+                        </div>
+                        <h3 class="text-lg font-medium text-white">Capture Image</h3>
+                    </div>
+                    <p class="text-gray-400 mb-6">Use your camera to capture an image for real-time AI analysis</p>
+                    
+                    <div class="relative bg-gray-800 rounded-lg overflow-hidden h-64 flex items-center justify-center" id="camera-preview">
+                        <div class="text-center" id="camera-placeholder">
+                            <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/bb3c0da0-f975-4ef9-85f4-76df05cefe20.png" alt="Illustration of smartphone camera with glowing AI eye overlay" class="w-32 h-32 object-contain mb-3 opacity-60"/>
+                            <p class="text-sm text-gray-400">Camera feed will appear here</p>
+                        </div>
+                        <video id="video" class="hidden w-full h-full object-cover" autoplay playsinline></video>
+                        <canvas id="canvas" class="hidden absolute top-0 left-0"></canvas>
+                    </div>
+                    
+                    <div class="flex space-x-3 mt-4">
+                        <button id="start-camera-btn" class="flex-1 btn-glow text-white font-medium py-2 px-4 rounded-md text-sm">
+                            <i class="fas fa-camera-retro mr-2"></i> Start Camera
+                        </button>
+                        <button id="capture-btn" class="flex-1 btn-glow text-white font-medium py-2 px-4 rounded-md text-sm bg-red-600 hover:bg-red-700 hidden">
+                            <i class="fas fa-camera mr-2"></i> Capture
+                        </button>
+                    </div>
+                    
+                    <div id="captured-image-container" class="hidden mt-4">
+                        <img id="captured-image" src="#" alt="Captured image preview" class="w-full rounded-lg border border-gray-700 hidden"/>
+                        
+                        <textarea id="capture-description" class="w-full mt-4 bg-gray-800 border border-gray-700 rounded-md py-3 px-4 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent" placeholder="Describe what AI should do with this capture..." rows="3"></textarea>
+                        
+                        <button id="process-capture-btn" class="w-full mt-4 btn-glow text-white font-bold py-3 px-4 rounded-md">
+                            <span id="process-capture-text">Process Capture</span>
+                            <span id="process-capture-loading" class="hidden">
+                                <i class="fas fa-circle-notch loader mr-2"></i> Analyzing...
+                            </span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div id="results-section" class="hidden mt-10">
+                <h3 class="text-xl font-bold text-white mb-4 flex items-center">
+                    <i class="fas fa-magic mr-3 text-indigo-400 wave"></i> AI Results
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="card-glass p-6">
+                        <h4 class="text-lg font-medium text-white mb-3">Original Image</h4>
+                        <img id="original-image-display" src="#" alt="Original input image" class="w-full rounded-lg border border-gray-700"/>
+                    </div>
+                    <div class="card-glass p-6">
+                        <h4 class="text-lg font-medium text-white mb-3">AI Generated Result</h4>
+                        <div id="result-container" class="flex items-center justify-center h-full">
+                            <div class="text-center pulse">
+                                <i class="fas fa-spinner loader text-4xl text-indigo-400 mb-3"></i>
+                                <p class="text-gray-400">Generating AI magic...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-6 card-glass p-6">
+                    <h4 class="text-lg font-medium text-white mb-3">AI Analysis</h4>
+                    <div id="ai-text-response" class="bg-gray-800 rounded-md p-4 text-gray-300">
+                        <p class="pulse">Waiting for AI response...</p>
+                    </div>
+                </div>
+                
+                <div class="flex justify-end mt-4 space-x-3">
+                    <button class="px-4 py-2 bg-gray-700 text-white rounded-md hover:bg-gray-600 transition-all">
+                        <i class="fas fa-download mr-2"></i> Download
+                    </button>
+                    <button class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-all">
+                        <i class="fas fa-share-alt mr-2"></i> Share
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Auth Modal -->
+        <div id="auth-modal" class="hidden fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+            <div class="relative bg-gray-800 rounded-lg max-w-md w-full mx-4 card-glass tilt-card">
+                <button id="close-auth-modal" class="absolute top-4 right-4 text-gray-400 hover:text-white">
+                    <i class="fas fa-times"></i>
+                </button>
+                
+                <div class="p-8">
+                    <div class="text-center mb-6">
+                        <h2 class="text-2xl font-bold text-white">Welcome to VenzAiGen</h2>
+                    </div>
+                    
+                    <div class="flex border-b border-gray-700 mb-6">
+                        <button id="login-tab" class="flex-1 py-2 font-medium text-center text-white border-b-2 border-indigo-500">Sign In</button>
+                        <button id="register-tab" class="flex-1 py-2 font-medium text-center text-gray-400">Sign Up</button>
+                    </div>
+                    
+                    <form id="login-form">
+                        <div class="mb-4">
+                            <label for="login-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" id="login-email" class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="you@example.com">
+                        </div>
+                        <div class="mb-6">
+                            <label for="login-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <input type="password" id="login-password" class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="w-full btn-glow text-white font-bold py-2 px-4 rounded-md">
+                            Sign In
+                        </button>
+                    </form>
+                    
+                    <form id="register-form" class="hidden">
+                        <div class="mb-4">
+                            <label for="register-name" class="block text-sm font-medium text-gray-300 mb-2">Full Name</label>
+                            <input type="text" id="register-name" class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="John Doe">
+                        </div>
+                        <div class="mb-4">
+                            <label for="register-email" class="block text-sm font-medium text-gray-300 mb-2">Email</label>
+                            <input type="email" id="register-email" class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="you@example.com">
+                        </div>
+                        <div class="mb-6">
+                            <label for="register-password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                            <input type="password" id="register-password" class="w-full bg-gray-700 border border-gray-600 rounded-md py-2 px-3 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="w-full btn-glow text-white font-bold py-2 px-4 rounded-md">
+                            Create Account
+                        </button>
+                    </form>
+                    
+                    <div class="mt-6 text-center text-sm text-gray-400">
+                        <p>By continuing, you agree to our <a href="#" class="text-indigo-400 hover:text-indigo-300">Terms</a> and <a href="#" class="text-indigo-400 hover:text-indigo-300">Privacy Policy</a></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-900 bg-opacity-80 backdrop-filter backdrop-blur-sm border-t border-gray-800 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:order-2 space-x-6">
+                    <a href="#" class="text-gray-400 hover:text-indigo-300">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-indigo-300">
+                        <i class="fab fa-github"></i>
+                    </a>
+                    <a href="#" class="text-gray-400 hover:text-indigo-300">
+                        <i class="fab fa-discord"></i>
+                    </a>
+                </div>
+                <div class="mt-8 md:mt-0 md:order-1">
+                    <p class="text-center text-xs text-gray-500">© 2023 VenzAiGen. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const apiKeyInput = document.getElementById('api-key');
+        const connectBtn = document.getElementById('connect-btn');
+        const connectText = document.getElementById('connect-text');
+        const connectLoading = document.getElementById('connect-loading');
+        const apiStatus = document.getElementById('api-status');
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
+        const errorText = document.getElementById('error-text');
+        const apiSection = document.getElementById('api-section');
+        const dashboardSection = document.getElementById('dashboard-section');
+        const changeApiBtn = document.getElementById('change-api-btn');
+        
+        // File Upload Elements
+        const dropZone = document.getElementById('drop-zone');
+        const fileInput = document.getElementById('file-input');
+        const selectFileBtn = document.getElementById('select-file-btn');
+        const uploadProgress = document.getElementById('upload-progress');
+        const uploadBar = document.getElementById('upload-bar');
+        const uploadPercent = document.getElementById('upload-percent');
+        const imageDescription = document.getElementById('image-description');
+        const processImageBtn = document.getElementById('process-image-btn');
+        const processText = document.getElementById('process-text');
+        const processLoading = document.getElementById('process-loading');
+        
+        // Camera Elements
+        const startCameraBtn = document.getElementById('start-camera-btn');
+        const captureBtn = document.getElementById('capture-btn');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const cameraPlaceholder = document.getElementById('camera-placeholder');
+        const capturedImageContainer = document.getElementById('captured-image-container');
+        const capturedImage = document.getElementById('captured-image');
+        const captureDescription = document.getElementById('capture-description');
+        const processCaptureBtn = document.getElementById('process-capture-btn');
+        const processCaptureText = document.getElementById('process-capture-text');
+        const processCaptureLoading = document.getElementById('process-capture-loading');
+        
+        // Results Elements
+        const resultsSection = document.getElementById('results-section');
+        const originalImageDisplay = document.getElementById('original-image-display');
+        const resultContainer = document.getElementById('result-container');
+        const aiTextResponse = document.getElementById('ai-text-response');
+        
+        // Auth Elements
+        const authModal = document.getElementById('auth-modal');
+        const closeAuthModal = document.getElementById('close-auth-modal');
+        const loginTab = document.getElementById('login-tab');
+        const registerTab = document.getElementById('register-tab');
+        const loginForm = document.getElementById('login-form');
+        const registerForm = document.getElementById('register-form');
+        
+        // Navigation Buttons
+        const navSignIn = document.querySelector('nav button:nth-of-type(1)');
+        const navSignUp = document.querySelector('nav button:nth-of-type(2)');
+        
+        // Global Variables
+        let stream = null;
+        let apiKey = localStorage.getItem('venz-aigen-apikey') || '';
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            if (apiKey) {
+                apiKeyInput.value = apiKey;
+                checkAPIKey(apiKey);
+            }
+            
+            // Setup drag and drop
+            setupDragAndDrop();
+            
+            // Setup event listeners
+            setupEventListeners();
+        });
+        
+        function setupDragAndDrop() {
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+            
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+            
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+            
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+            
+            function highlight() {
+                dropZone.classList.add('border-indigo-500');
+            }
+            
+            function unhighlight() {
+                dropZone.classList.remove('border-indigo-500');
+            }
+            
+            dropZone.addEventListener('drop', handleDrop, false);
+            
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                
+                if (files.length) {
+                    fileInput.files = files;
+                    handleFiles(files);
+                }
+            }
+        }
+        
+        function setupEventListeners() {
+            // API Connection
+            connectBtn.addEventListener('click', handleApiConnect);
+            changeApiBtn.addEventListener('click', () => {
+                dashboardSection.classList.add('hidden');
+                apiSection.classList.remove('hidden');
+            });
+            
+            // File Upload
+            selectFileBtn.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => handleFiles(e.target.files));
+            processImageBtn.addEventListener('click', processImage);
+            
+            // Camera Capture
+            startCameraBtn.addEventListener('click', startCamera);
+            captureBtn.addEventListener('click', takePicture);
+            processCaptureBtn.addEventListener('click', processCapture);
+            
+            // Authentication
+            navSignIn.addEventListener('click', () => {
+                authModal.classList.remove('hidden');
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.classList.add('text-white', 'border-indigo-500');
+                loginTab.classList.remove('text-gray-400');
+                registerTab.classList.add('text-gray-400');
+                registerTab.classList.remove('text-white', 'border-indigo-500');
+            });
+            
+            navSignUp.addEventListener('click', () => {
+                authModal.classList.remove('hidden');
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                registerTab.classList.add('text-white', 'border-indigo-500');
+                registerTab.classList.remove('text-gray-400');
+                loginTab.classList.add('text-gray-400');
+                loginTab.classList.remove('text-white', 'border-indigo-500');
+            });
+            
+            closeAuthModal.addEventListener('click', () => {
+                authModal.classList.add('hidden');
+            });
+            
+            loginTab.addEventListener('click', () => {
+                loginForm.classList.remove('hidden');
+                registerForm.classList.add('hidden');
+                loginTab.classList.add('text-white', 'border-indigo-500');
+                loginTab.classList.remove('text-gray-400');
+                registerTab.classList.add('text-gray-400');
+                registerTab.classList.remove('text-white', 'border-indigo-500');
+            });
+            
+            registerTab.addEventListener('click', () => {
+                registerForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                registerTab.classList.add('text-white', 'border-indigo-500');
+                registerTab.classList.remove('text-gray-400');
+                loginTab.classList.add('text-gray-400');
+                loginTab.classList.remove('text-white', 'border-indigo-500');
+            });
+            
+            loginForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, implement proper authentication
+                authModal.classList.add('hidden');
+            });
+            
+            registerForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // In a real app, implement proper registration
+                authModal.classList.add('hidden');
+            });
+        }
+        
+        // API Connection Functions
+        function handleApiConnect() {
+            const key = apiKeyInput.value.trim();
+            
+            if (!key) {
+                showError('Please enter an API key');
+                return;
+            }
+            
+            connectText.classList.add('hidden');
+            connectLoading.classList.remove('hidden');
+            
+            // Simulate API validation with timeout
+            setTimeout(() => {
+                checkAPIKey(key);
+                
+                connectText.classList.remove('hidden');
+                connectLoading.classList.add('hidden');
+            }, 1500);
+        }
+        
+        function checkAPIKey(key) {
+            // In a real app, you would validate the key with the API
+            // For this demo, we'll just check if it's not empty
+            if (key && key.length > 10) {
+                apiKey = key;
+                localStorage.setItem('venz-aigen-apikey', apiKey);
+                
+                // Update UI
+                apiStatus.innerHTML = '<svg class="h-5 w-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path></svg>';
+                successMessage.classList.remove('hidden');
+                errorMessage.classList.add('hidden');
+                
+                // Show dashboard after 2 seconds
+                setTimeout(() => {
+                    successMessage.classList.add('hidden');
+                    apiSection.classList.add('hidden');
+                    dashboardSection.classList.remove('hidden');
+                }, 2000);
+            } else {
+                showError('Invalid API key. Please check and try again.');
+            }
+        }
+        
+        function showError(message) {
+            errorText.textContent = message;
+            apiStatus.innerHTML = '<svg class="h-5 w-5 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>';
+            errorMessage.classList.remove('hidden');
+            successMessage.classList.add('hidden');
+        }
+        
+        // File Upload Functions
+        function handleFiles(files) {
+            const file = files[0];
+            
+            if (!file.type.match('image.*')) {
+                showError('Please select an image file');
+                return;
+            }
+            
+            // Display upload progress
+            uploadProgress.classList.remove('hidden');
+            uploadBar.style.width = '0%';
+            uploadPercent.textContent = '0%';
+            
+            // Simulate upload progress
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 5;
+                uploadBar.style.width = `${progress}%`;
+                uploadPercent.textContent = `${progress}%`;
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    setTimeout(() => {
+                        uploadProgress.classList.add('hidden');
+                        
+                        // Display image preview
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            originalImageDisplay.src = e.target.result;
+                            imageDescription.classList.remove('hidden');
+                            processImageBtn.classList.remove('hidden');
+                            
+                            // In a real app, you would upload the file to your server
+                        };
+                        reader.readAsDataURL(file);
+                    }, 500);
+                }
+            }, 100);
+        }
+        
+        function processImage() {
+            const description = imageDescription.value.trim();
+            
+            if (!description) {
+                showError('Please describe what you want the AI to do with this image');
+                return;
+            }
+            
+            processText.classList.add('hidden');
+            processLoading.classList.remove('hidden');
+            
+            // Simulate API processing with timeout
+            setTimeout(() => {
+                processText.classList.remove('hidden');
+                processLoading.classList.add('hidden');
+                
+                // Show results
+                resultsSection.classList.remove('hidden');
+                
+                // Simulate AI response
+                simulateAIResponse(description);
+            }, 2000);
+        }
+        
+        // Camera Functions
+        async function startCamera() {
+            try {
+                cameraPlaceholder.classList.add('hidden');
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                captureBtn.classList.remove('hidden');
+                startCameraBtn.textContent = 'Stop Camera';
+            } catch (err) {
+                console.error('Error accessing camera:', err);
+                showError('Could not access camera. Please check permissions.');
+            }
+            
+            // Toggle camera on/off
+            startCameraBtn.addEventListener('click', toggleCamera, { once: true });
+        }
+        
+        function toggleCamera() {
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+                video.srcObject = null;
+                video.classList.add('hidden');
+                captureBtn.classList.add('hidden');
+                startCameraBtn.textContent = 'Start Camera';
+                startCameraBtn.addEventListener('click', startCamera, { once: true });
+            }
+        }
+        
+        function takePicture() {
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            canvas.getContext('2d').drawImage(video, 0, 0);
+            
+            const imageDataUrl = canvas.toDataURL('image/png');
+            capturedImage.src = imageDataUrl;
+            capturedImage.classList.remove('hidden');
+            capturedImageContainer.classList.remove('hidden');
+        }
+        
+        function processCapture() {
+            const description = captureDescription.value.trim();
+            
+            if (!description) {
+                showError('Please describe what you want the AI to do with this image');
+                return;
+            }
+            
+            processCaptureText.classList.add('hidden');
+            processCaptureLoading.classList.remove('hidden');
+            
+            // Simulate API processing with timeout
+            setTimeout(() => {
+                processCaptureText.classList.remove('hidden');
+                processCaptureLoading.classList.add('hidden');
+                
+                // Show results
+                resultsSection.classList.remove('hidden');
+                
+                // Display the captured image
+                originalImageDisplay.src = capturedImage.src;
+                
+                // Simulate AI response
+                simulateAIResponse(description);
+            }, 2000);
+        }
+        
+        // Simulate AI response
+        function simulateAIResponse(description) {
+            const responses = [
+                `Based on your description "${description}", I've analyzed the image and found several interesting patterns. The AI model has identified the key elements and enhanced them using advanced algorithms.`,
+                `Your request to "${description}" has been processed. The neural network has generated variations with improved lighting and detail enhancement while preserving the original composition.`,
+                `The generative model has completed your request to "${description}". I've applied stylistic transformations that match your preferences while maintaining the integrity of the original image content.`,
+                `Processing complete for "${description}". The AI system has interpreted your input and created a new version with artistic filters and optimized visual elements.`
+            ];
+            
+            const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+            
+            aiTextResponse.innerHTML = `
+                <div class="flex items-start mb-4">
+                    <div class="flex-shrink-0 h-10 w-10 rounded-full bg-indigo-600 flex items-center justify-center mr-3">
+                        <i class="fas fa-robot text-white"></i>
+                    </div>
+                    <div>
+                        <p class="font-medium text-white mb-1">VenzAiGen</p>
+                        <p>${randomResponse}</p>
+                    </div>
+                </div>
+                
+                <div class="p-3 bg-indigo-900 bg-opacity-20 rounded-md mt-4">
+                    <p class="text-xs text-indigo-300 mb-1">AI Model:</p>
+                    <p class="text-sm">GroqCloud-SDXL-v2.1 (8K Resolution Mode)</p>
+                    
+                    <p class="text-xs text-indigo-300 mb-1 mt-2">Processing Statistics:</p>
+                    <p class="text-sm">• Tokens Used: 1024</p>
+                    <p class="text-sm">• Latency: 452ms</p>
+                    <p class="text-sm">• Quality Assurance Score: 98%</p>
+                </div>
+            `;
+            
+            // In a real app, you would fetch actual AI-generated images from an API
+            // For this demo, we'll use placeholder images
+            resultContainer.innerHTML = `
+                <img src="https://storage.googleapis.com/workspace-0f70711f-8b4e-4d94-86f1-2a93ccde5887/image/a79dcef1-d6ca-497f-82f7-d6a378470391.png" alt="AI generated image based on your description" class="w-full rounded-lg border border-gray-700"/>
+            `;
+        }
+    </script>
+</body>
+</html>
+
